@@ -5,26 +5,25 @@ import re
 # 1. Configuración de página
 st.set_page_config(page_title="Imagen Telmex 2026", layout="wide")
 
-# 2. Estilos CSS Corporativos (Título Azul y Diseño de Bloques)
+# 2. Estilos CSS Corporativos (Corregidos para no afectar iconos)
 st.markdown("""
     <style>
     .stApp {
         background-color: #FFFFFF;
     }
     
-    /* Estilo para el Título Principal que solicitaste */
-    .titulo-principal {
-        color: #005596;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        font-size: 2.5rem;
+    /* Titulo Principal en Azul */
+    .main-title {
+        color: #005596 !important;
+        font-family: 'Segoe UI', sans-serif;
+        font-size: 2.8rem;
         font-weight: 800;
         margin-bottom: 5px;
-        padding-top: 10px;
     }
     
     /* Contador de registros */
     .contador-registros {
-        color: #005596;
+        color: #005596 !important;
         font-size: 1.1rem;
         font-weight: 700;
         padding: 12px;
@@ -34,7 +33,7 @@ st.markdown("""
         border-radius: 4px;
     }
     
-    /* Contenedor del registro */
+    /* Tarjeta de registro */
     .evidencia-container {
         background-color: #F8FAFC; 
         border-radius: 12px;
@@ -44,7 +43,7 @@ st.markdown("""
         box-shadow: 0 4px 10px rgba(0, 85, 150, 0.06);
     }
     
-    /* Encabezado del Folio */
+    /* Encabezado de Folio en Azul */
     .folio-header {
         background-color: #005596;
         color: white !important;
@@ -57,11 +56,13 @@ st.markdown("""
         padding: 20px;
     }
     
+    /* Labels de datos */
     .info-label {
         color: #005596;
         font-size: 0.8rem;
         font-weight: 700;
         text-transform: uppercase;
+        margin-bottom: 1px;
     }
     
     .info-value {
@@ -74,12 +75,12 @@ st.markdown("""
         border: 1px solid #E2E8F0;
     }
 
-    /* Barra lateral azul */
-    section[data-testid="stSidebar"] {
+    /* Barra lateral - Solo afectamos el fondo y textos específicos */
+    [data-testid="stSidebar"] {
         background-color: #005596;
     }
-    section[data-testid="stSidebar"] .stMarkdown h1, 
-    section[data-testid="stSidebar"] label {
+    [data-testid="stSidebar"] .stMarkdown h1, 
+    [data-testid="stSidebar"] label {
         color: white !important;
     }
     </style>
@@ -125,8 +126,8 @@ if df is not None:
 
     # --- CUERPO PRINCIPAL ---
     
-    # Título en Azul Corporativo
-    st.markdown('<h1 class="titulo-principal">Imagen Telmex 2026</h1>', unsafe_allow_html=True)
+    # Título Azul usando una clase específica (main-title) para no romper el resto
+    st.markdown('<h1 class="main-title">🔵 Imagen Telmex 2026</h1>', unsafe_allow_html=True)
     
     # Contador de registros
     st.markdown(f'<div class="contador-registros">Número de registros encontrados: {len(df_f)}</div>', unsafe_allow_html=True)
