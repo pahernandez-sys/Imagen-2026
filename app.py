@@ -5,7 +5,7 @@ import re
 # 1. Configuración de página
 st.set_page_config(page_title="Imagen Telmex 2026", layout="wide")
 
-# 2. Estilos CSS Corporativos con Filtros en Blanco
+# 2. Estilos CSS Corporativos - Filtros Blancos con Etiquetas Blancas
 st.markdown("""
     <style>
     .stApp {
@@ -52,30 +52,37 @@ st.markdown("""
         font-weight: 700;
     }
     
-    /* ESTILO DE LA BARRA LATERAL Y FILTROS (LO QUE SOLICITASTE) */
+    /* BARRA LATERAL */
     [data-testid="stSidebar"] {
         background-color: #005596;
     }
-    [data-testid="stSidebar"] .stMarkdown h1, 
-    [data-testid="stSidebar"] label {
-        color: white !important; /* Etiquetas en blanco para que se lean sobre el azul */
-        font-weight: 600;
+
+    /* FORZAR ETIQUETAS DE FILTROS A BLANCO (Área, Tipo, etc.) */
+    [data-testid="stSidebar"] label p {
+        color: white !important;
+        font-size: 1.1rem !important;
+        font-weight: 600 !important;
+    }
+    
+    /* TITULO DE FILTROS EN BLANCO */
+    [data-testid="stSidebar"] h1 {
+        color: white !important;
     }
 
-    /* Forzar que los recuadros de los filtros sean blancos y letra negra */
+    /* RECUADROS DE FILTROS EN BLANCO CON TEXTO NEGRO */
     div[data-baseweb="select"] > div, 
     div[data-baseweb="base-input"] > input {
         background-color: white !important;
         color: #000000 !important;
-        border-radius: 8px;
     }
     
-    /* Color del texto dentro de los selectores */
-    div[data-testid="stSelectbox"] div, 
+    /* Color del texto dentro de los selectores al escribir */
+    div[data-testid="stSelectbox"] p, 
     div[data-testid="stTextInput"] input {
         color: black !important;
     }
 
+    /* Estilos de información interna */
     .info-label {
         color: #005596;
         font-size: 0.8rem;
@@ -120,13 +127,11 @@ df = cargar_datos()
 if df is not None:
     # --- BARRA LATERAL ---
     st.sidebar.title("🔍 FILTROS")
-    lista_areas = ["Todas"] + sorted(df['AREA'].unique().tolist())
-    area_sel = st.sidebar.selectbox("Área Operativa:", lista_areas)
     
-    lista_tipos = ["Todos"] + sorted(df['TIPO'].unique().tolist())
-    tipo_sel = st.sidebar.selectbox("Tipo de Infraestructura:", lista_tipos)
-    
-    busqueda = st.sidebar.text_input("Buscar por Folio:")
+    # Filtros con nombres específicos
+    area_sel = st.sidebar.selectbox("Área Operativa:", ["Todas"] + sorted(df['AREA'].unique().tolist()))
+    tipo_sel = st.sidebar.selectbox("Tipo de Infraestructura:", ["Todos"] + sorted(df['TIPO'].unique().tolist()))
+    busqueda = st.sidebar.text_input("Folio:")
 
     df_f = df.copy()
     if area_sel != "Todas": df_f = df_f[df_f['AREA'] == area_sel]
@@ -165,8 +170,8 @@ if df is not None:
                 link_a = convertir_link_drive(fila[col_ant_list[0]])
                 if link_a:
                     st.image(link_a, caption="SITUACIÓN ANTERIOR", use_container_width=True)
-                else:
-                    st.info("Sin registro 'Antes'")
+            else:
+                st.info("Sin registro 'Antes'")
 
         with col_d:
             col_des_list = [c for c in df.columns if 'Despues' in c]
