@@ -5,11 +5,21 @@ import re
 # 1. Configuración de página
 st.set_page_config(page_title="Imagen Telmex 2026", layout="wide")
 
-# 2. Estilos CSS Corporativos Refinados
+# 2. Estilos CSS Corporativos (Título Azul y Diseño de Bloques)
 st.markdown("""
     <style>
     .stApp {
         background-color: #FFFFFF;
+    }
+    
+    /* Estilo para el Título Principal que solicitaste */
+    .titulo-principal {
+        color: #005596;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 5px;
+        padding-top: 10px;
     }
     
     /* Contador de registros */
@@ -24,27 +34,25 @@ st.markdown("""
         border-radius: 4px;
     }
     
-    /* Contenedor principal del registro */
+    /* Contenedor del registro */
     .evidencia-container {
         background-color: #F8FAFC; 
         border-radius: 12px;
         margin-bottom: 35px;
         border: 1px solid #D1DBE5;
-        overflow: hidden; /* Para que el encabezado respete los bordes redondeados */
+        overflow: hidden;
         box-shadow: 0 4px 10px rgba(0, 85, 150, 0.06);
     }
     
-    /* Encabezado del Folio (Recuadro Azul solicitado) */
+    /* Encabezado del Folio */
     .folio-header {
         background-color: #005596;
-        color: white;
-        padding: 10px 20px;
-        font-size: 1.4rem;
+        color: white !important;
+        padding: 12px 20px;
+        font-size: 1.3rem;
         font-weight: 700;
-        letter-spacing: 1px;
     }
     
-    /* Cuerpo interno de la tarjeta */
     .card-body {
         padding: 20px;
     }
@@ -54,7 +62,6 @@ st.markdown("""
         font-size: 0.8rem;
         font-weight: 700;
         text-transform: uppercase;
-        margin-bottom: 1px;
     }
     
     .info-value {
@@ -67,6 +74,7 @@ st.markdown("""
         border: 1px solid #E2E8F0;
     }
 
+    /* Barra lateral azul */
     section[data-testid="stSidebar"] {
         background-color: #005596;
     }
@@ -116,12 +124,14 @@ if df is not None:
     if busqueda: df_f = df_f[df_f['Folio'].astype(str).str.contains(busqueda)]
 
     # --- CUERPO PRINCIPAL ---
-    st.title("🔵 Imagen Telmex 2026")
     
+    # Título en Azul Corporativo
+    st.markdown('<h1 class="titulo-principal">Imagen Telmex 2026</h1>', unsafe_allow_html=True)
+    
+    # Contador de registros
     st.markdown(f'<div class="contador-registros">Número de registros encontrados: {len(df_f)}</div>', unsafe_allow_html=True)
 
     for _, fila in df_f.head(50).iterrows():
-        # Inicio del contenedor con encabezado de Folio
         st.markdown(f'''
             <div class="evidencia-container">
                 <div class="folio-header">FOLIO: {fila['Folio']}</div>
@@ -144,22 +154,23 @@ if df is not None:
                 st.markdown(f'<p class="info-label">{label}</p><p class="info-value">{value}</p>', unsafe_allow_html=True)
             
         with col_a:
-            col_ant = [c for c in df.columns if 'Antes' in c][0]
-            link_a = convertir_link_drive(fila[col_ant])
-            if link_a:
-                st.image(link_a, caption="SITUACIÓN ANTERIOR", use_container_width=True)
-            else:
-                st.info("Sin registro 'Antes'")
+            col_ant_list = [c for c in df.columns if 'Antes' in c]
+            if col_ant_list:
+                link_a = convertir_link_drive(fila[col_ant_list[0]])
+                if link_a:
+                    st.image(link_a, caption="SITUACIÓN ANTERIOR", use_container_width=True)
+                else:
+                    st.info("Sin registro 'Antes'")
 
         with col_d:
-            col_des = [c for c in df.columns if 'Despues' in c][0]
-            link_d = convertir_link_drive(fila[col_des])
-            if link_d:
-                st.image(link_d, caption="SITUACIÓN FINAL", use_container_width=True)
-            else:
-                st.info("Sin registro 'Después'")
+            col_des_list = [c for c in df.columns if 'Despues' in c]
+            if col_des_list:
+                link_d = convertir_link_drive(fila[col_des_list[0]])
+                if link_d:
+                    st.image(link_d, caption="SITUACIÓN FINAL", use_container_width=True)
+                else:
+                    st.info("Sin registro 'Después'")
         
-        # Cierre de los divs HTML
         st.markdown('</div></div>', unsafe_allow_html=True)
 
 else:
