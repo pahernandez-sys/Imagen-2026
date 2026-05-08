@@ -77,7 +77,7 @@ st.markdown("""
     }
 
     .info-label {
-        color: #005596;
+        color: white;
         font-size: 0.8rem;
         font-weight: 700;
         text-transform: uppercase;
