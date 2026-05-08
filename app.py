@@ -30,8 +30,8 @@ st.sidebar.title("🛠️ Panel de Control")
 
 # Filtros
 st.sidebar.subheader("Filtrar Registros")
-area_list = ["Todas"] + sorted(df['Área'].unique().tolist())
-area_sel = st.sidebar.selectbox("Por Área:", area_list)
+area_list = ["Todas"] + sorted(df['Area'].unique().tolist())
+area_sel = st.sidebar.selectbox("Por Area:", area_list)
 
 tipo_list = ["Todos"] + sorted(df['Tipo'].unique().tolist())
 tipo_sel = st.sidebar.selectbox("Por Tipo:", tipo_list)
