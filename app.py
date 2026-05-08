@@ -66,9 +66,9 @@ st.markdown("""
     }
     
     .info-value {
-        color: #333333;
+        color: white;
         font-size: 0.95rem;
-        background-color: white;
+        background-color: black;
         padding: 5px 10px;
         border-radius: 4px;
         margin-bottom: 10px;
