@@ -56,12 +56,12 @@ if df is not None:
     col_area = 'AREA' if 'AREA' in df.columns else df.columns[0]
     # Convertimos a string antes de ordenar para evitar el TypeError
     areas_disponibles = sorted([str(x) for x in df[col_area].dropna().unique()])
-    area_sel = st.sidebar.selectbox("Área Operativa:", ["Todas"] + areas_disponibles)
+    area_sel = st.sidebar.selectbox("Área:", ["Todas"] + areas_disponibles)
     
     # Filtro de Tipo
     col_tipo = 'TIPO' if 'TIPO' in df.columns else df.columns[1]
     tipos_disponibles = sorted([str(x) for x in df[col_tipo].dropna().unique()])
-    tipo_sel = st.sidebar.selectbox("Tipo de Infraestructura:", ["Todos"] + tipos_disponibles)
+    tipo_sel = st.sidebar.selectbox("Tipo:", ["Todos"] + tipos_disponibles)
     
     busqueda = st.sidebar.text_input("Buscar por Folio:")
 
@@ -90,7 +90,7 @@ if df is not None:
                 ("📍 ÁREA", fila.get('AREA', 'N/A')),
                 ("🛠️ TIPO", fila.get('TIPO', 'N/A')),
                 ("📝 ESTADO", fila.get('ESTADO', 'N/A')),
-                ("📞 DISTRITO", fila.get('DISTRITO TELEFONO', 'N/A')),
+                ("📞 DISTRITO O TELEFONO", fila.get('DISTRITO TELEFONO', 'N/A')),
                 ("📢 CAMPAÑA", fila.get('VINIL O LATERAL INSTALADO ?', 'N/A'))
             ]
             for label, value in campos:
