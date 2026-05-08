@@ -81,7 +81,7 @@ st.markdown("""
     }
     [data-testid="stSidebar"] .stMarkdown h1, 
     [data-testid="stSidebar"] label {
-        color: white !important;
+        color: black !important;
     }
     </style>
     """, unsafe_allow_html=True)
