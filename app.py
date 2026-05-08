@@ -5,9 +5,10 @@ import re
 # 1. Configuración de página
 st.set_page_config(page_title="Imagen Telmex 2026", layout="wide")
 
-# 2. Estilos CSS Corporativos - Filtros Blancos con Etiquetas Blancas
+# 2. Estilos CSS Corporativos - ULTRABLOQUEO DE COLORES
 st.markdown("""
     <style>
+    /* Fondo general */
     .stApp {
         background-color: #FFFFFF;
     }
@@ -21,7 +22,42 @@ st.markdown("""
         margin-bottom: 5px;
     }
     
-    /* Contador de registros */
+    /* Barra lateral Azul */
+    [data-testid="stSidebar"] {
+        background-color: #005596 !important;
+    }
+
+    /* FORZAR TODO EL TEXTO DE LA BARRA LATERAL A BLANCO */
+    /* Esto ataca a títulos, etiquetas y párrafos dentro de la sidebar */
+    [data-testid="stSidebar"] stMarkdownContainer p,
+    [data-testid="stSidebar"] label,
+    [data-testid="stSidebar"] span,
+    [data-testid="stSidebar"] h1 {
+        color: white !important;
+    }
+
+    /* RECUADROS DE FILTROS EN BLANCO */
+    /* Esto asegura que el fondo sea blanco */
+    [data-testid="stSidebar"] div[data-baseweb="select"] > div,
+    [data-testid="stSidebar"] div[data-baseweb="base-input"] > input,
+    [data-testid="stSidebar"] .stSelectbox div,
+    [data-testid="stSidebar"] .stTextInput input {
+        background-color: white !important;
+        color: black !important; /* Texto que escribe el usuario en negro */
+    }
+
+    /* Específicamente el texto dentro de los filtros ya seleccionados */
+    [data-testid="stSidebar"] div[data-testid="stWidgetLabel"] p {
+        color: white !important;
+        font-weight: 600 !important;
+    }
+    
+    /* Arreglar el color de la flechita y texto interno de selectores */
+    [data-testid="stSidebar"] div[aria-selected="true"] {
+        color: black !important;
+    }
+
+    /* Estilos de las tarjetas de contenido */
     .contador-registros {
         color: #005596 !important;
         font-size: 1.1rem;
@@ -33,7 +69,6 @@ st.markdown("""
         border-radius: 4px;
     }
     
-    /* Tarjeta de registro */
     .evidencia-container {
         background-color: #F8FAFC; 
         border-radius: 12px;
@@ -43,7 +78,6 @@ st.markdown("""
         box-shadow: 0 4px 10px rgba(0, 85, 150, 0.06);
     }
     
-    /* Encabezado de Folio */
     .folio-header {
         background-color: #005596;
         color: white !important;
@@ -52,37 +86,6 @@ st.markdown("""
         font-weight: 700;
     }
     
-    /* BARRA LATERAL */
-    [data-testid="stSidebar"] {
-        background-color: #005596;
-    }
-
-    /* FORZAR ETIQUETAS DE FILTROS A BLANCO (Área, Tipo, etc.) */
-    [data-testid="stSidebar"] label p {
-        color: white !important;
-        font-size: 1.1rem !important;
-        font-weight: 600 !important;
-    }
-    
-    /* TITULO DE FILTROS EN BLANCO */
-    [data-testid="stSidebar"] h1 {
-        color: white !important;
-    }
-
-    /* RECUADROS DE FILTROS EN BLANCO CON TEXTO NEGRO */
-    div[data-baseweb="select"] > div, 
-    div[data-baseweb="base-input"] > input {
-        background-color: white !important;
-        color: #000000 !important;
-    }
-    
-    /* Color del texto dentro de los selectores al escribir */
-    div[data-testid="stSelectbox"] p, 
-    div[data-testid="stTextInput"] input {
-        color: black !important;
-    }
-
-    /* Estilos de información interna */
     .info-label {
         color: #005596;
         font-size: 0.8rem;
@@ -128,7 +131,6 @@ if df is not None:
     # --- BARRA LATERAL ---
     st.sidebar.title("🔍 FILTROS")
     
-    # Filtros con nombres específicos
     area_sel = st.sidebar.selectbox("Área Operativa:", ["Todas"] + sorted(df['AREA'].unique().tolist()))
     tipo_sel = st.sidebar.selectbox("Tipo de Infraestructura:", ["Todos"] + sorted(df['TIPO'].unique().tolist()))
     busqueda = st.sidebar.text_input("Folio:")
@@ -170,8 +172,8 @@ if df is not None:
                 link_a = convertir_link_drive(fila[col_ant_list[0]])
                 if link_a:
                     st.image(link_a, caption="SITUACIÓN ANTERIOR", use_container_width=True)
-            else:
-                st.info("Sin registro 'Antes'")
+                else:
+                    st.info("Sin registro 'Antes'")
 
         with col_d:
             col_des_list = [c for c in df.columns if 'Despues' in c]
@@ -183,6 +185,5 @@ if df is not None:
                     st.info("Sin registro 'Después'")
         
         st.markdown('</div></div>', unsafe_allow_html=True)
-
 else:
     st.error("Archivo 'Datos.xlsx' no detectado.")
