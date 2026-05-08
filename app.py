@@ -5,7 +5,7 @@ import re
 # 1. Configuración de página
 st.set_page_config(page_title="Imagen Telmex 2026", layout="wide")
 
-# 2. Estilos CSS Corporativos - ULTRABLOQUEO DE COLORES
+# 2. Estilos CSS Corporativos - SOLUCIÓN DEFINITIVA PARA TEXTO BLANCO
 st.markdown("""
     <style>
     /* Fondo general */
@@ -19,45 +19,40 @@ st.markdown("""
         font-family: 'Segoe UI', sans-serif;
         font-size: 2.8rem;
         font-weight: 800;
-        margin-bottom: 5px;
     }
     
-    /* Barra lateral Azul */
+    /* BARRA LATERAL */
     [data-testid="stSidebar"] {
         background-color: #005596 !important;
     }
 
-    /* FORZAR TODO EL TEXTO DE LA BARRA LATERAL A BLANCO */
-    /* Esto ataca a títulos, etiquetas y párrafos dentro de la sidebar */
-    [data-testid="stSidebar"] stMarkdownContainer p,
-    [data-testid="stSidebar"] label,
-    [data-testid="stSidebar"] span,
+    /* ESTE ES EL CAMBIO CLAVE: Forzamos el blanco en los párrafos de las etiquetas */
+    [data-testid="stSidebar"] [data-testid="stWidgetLabel"] p {
+        color: white !important;
+        font-size: 1.1rem !important;
+        font-weight: 600 !important;
+        background-color: transparent !important; /* Eliminamos cualquier recuadro blanco del texto */
+    }
+    
+    /* Título superior de la barra lateral */
     [data-testid="stSidebar"] h1 {
         color: white !important;
     }
 
-    /* RECUADROS DE FILTROS EN BLANCO */
-    /* Esto asegura que el fondo sea blanco */
+    /* RECUADROS DE ENTRADA (Blancos con texto negro) */
+    /* Selectores y Inputs */
     [data-testid="stSidebar"] div[data-baseweb="select"] > div,
-    [data-testid="stSidebar"] div[data-baseweb="base-input"] > input,
-    [data-testid="stSidebar"] .stSelectbox div,
-    [data-testid="stSidebar"] .stTextInput input {
+    [data-testid="stSidebar"] div[data-baseweb="base-input"] > input {
         background-color: white !important;
-        color: black !important; /* Texto que escribe el usuario en negro */
-    }
-
-    /* Específicamente el texto dentro de los filtros ya seleccionados */
-    [data-testid="stSidebar"] div[data-testid="stWidgetLabel"] p {
-        color: white !important;
-        font-weight: 600 !important;
-    }
-    
-    /* Arreglar el color de la flechita y texto interno de selectores */
-    [data-testid="stSidebar"] div[aria-selected="true"] {
         color: black !important;
     }
 
-    /* Estilos de las tarjetas de contenido */
+    /* Texto que aparece dentro cuando ya seleccionaste algo */
+    [data-testid="stSidebar"] [data-testid="stSelectbox"] div[data-baseweb="select"] {
+        color: black !important;
+    }
+    
+    /* CONTENIDO PRINCIPAL */
     .contador-registros {
         color: #005596 !important;
         font-size: 1.1rem;
@@ -105,7 +100,7 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# 3. Función de conversión de links
+# (El resto de la lógica de carga y visualización se mantiene igual)
 def convertir_link_drive(url):
     if pd.isna(url) or "drive.google.com" not in str(url):
         return None
@@ -115,7 +110,6 @@ def convertir_link_drive(url):
         return f"https://drive.google.com/thumbnail?id={id_foto}&sz=w1000"
     return None
 
-# 4. Carga de Datos
 @st.cache_data
 def cargar_datos():
     try:
@@ -133,7 +127,7 @@ if df is not None:
     
     area_sel = st.sidebar.selectbox("Área Operativa:", ["Todas"] + sorted(df['AREA'].unique().tolist()))
     tipo_sel = st.sidebar.selectbox("Tipo de Infraestructura:", ["Todos"] + sorted(df['TIPO'].unique().tolist()))
-    busqueda = st.sidebar.text_input("Folio:")
+    busqueda = st.sidebar.text_input("Buscar por Folio:")
 
     df_f = df.copy()
     if area_sel != "Todas": df_f = df_f[df_f['AREA'] == area_sel]
