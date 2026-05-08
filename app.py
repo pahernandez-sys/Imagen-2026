@@ -5,14 +5,14 @@ import re
 # 1. Configuración de página
 st.set_page_config(page_title="Imagen Telmex 2026", layout="wide")
 
-# 2. Estilos CSS Corporativos (Corregidos para no afectar iconos)
+# 2. Estilos CSS Corporativos con Filtros en Blanco
 st.markdown("""
     <style>
     .stApp {
         background-color: #FFFFFF;
     }
     
-    /* Titulo Principal en Azul */
+    /* Titulo Principal */
     .main-title {
         color: #005596 !important;
         font-family: 'Segoe UI', sans-serif;
@@ -37,32 +37,50 @@ st.markdown("""
     .evidencia-container {
         background-color: #F8FAFC; 
         border-radius: 12px;
-        margin-bottom: 15px;
+        margin-bottom: 35px;
         border: 1px solid #D1DBE5;
         overflow: hidden;
         box-shadow: 0 4px 10px rgba(0, 85, 150, 0.06);
     }
     
-    /* Encabezado de Folio en Azul */
+    /* Encabezado de Folio */
     .folio-header {
         background-color: #005596;
         color: white !important;
         padding: 12px 20px;
         font-size: 1.3rem;
+        font-weight: 700;
+    }
+    
+    /* ESTILO DE LA BARRA LATERAL Y FILTROS (LO QUE SOLICITASTE) */
+    [data-testid="stSidebar"] {
+        background-color: #005596;
+    }
+    [data-testid="stSidebar"] .stMarkdown h1, 
+    [data-testid="stSidebar"] label {
+        color: white !important; /* Etiquetas en blanco para que se lean sobre el azul */
         font-weight: 600;
     }
-    
-    .card-body {
-        padding: 1px;
+
+    /* Forzar que los recuadros de los filtros sean blancos y letra negra */
+    div[data-baseweb="select"] > div, 
+    div[data-baseweb="base-input"] > input {
+        background-color: white !important;
+        color: #000000 !important;
+        border-radius: 8px;
     }
     
-    /* Labels de datos */
+    /* Color del texto dentro de los selectores */
+    div[data-testid="stSelectbox"] div, 
+    div[data-testid="stTextInput"] input {
+        color: black !important;
+    }
+
     .info-label {
         color: #005596;
         font-size: 0.8rem;
         font-weight: 700;
         text-transform: uppercase;
-        margin-bottom: 1px;
     }
     
     .info-value {
@@ -73,15 +91,6 @@ st.markdown("""
         border-radius: 4px;
         margin-bottom: 10px;
         border: 1px solid #E2E8F0;
-    }
-
-    /* Barra lateral - Solo afectamos el fondo y textos específicos */
-    [data-testid="stSidebar"] {
-        background-color: #005596;
-    }
-    [data-testid="stSidebar"] .stMarkdown h1, 
-    [data-testid="stSidebar"] label {
-        color: white !important;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -115,9 +124,9 @@ if df is not None:
     area_sel = st.sidebar.selectbox("Área Operativa:", lista_areas)
     
     lista_tipos = ["Todos"] + sorted(df['TIPO'].unique().tolist())
-    tipo_sel = st.sidebar.selectbox("Tipo:", lista_tipos)
+    tipo_sel = st.sidebar.selectbox("Tipo de Infraestructura:", lista_tipos)
     
-    busqueda = st.sidebar.text_input("Folio:")
+    busqueda = st.sidebar.text_input("Buscar por Folio:")
 
     df_f = df.copy()
     if area_sel != "Todas": df_f = df_f[df_f['AREA'] == area_sel]
@@ -125,11 +134,7 @@ if df is not None:
     if busqueda: df_f = df_f[df_f['Folio'].astype(str).str.contains(busqueda)]
 
     # --- CUERPO PRINCIPAL ---
-    
-    # Título Azul usando una clase específica (main-title) para no romper el resto
     st.markdown('<h1 class="main-title">🔵 Imagen Telmex 2026</h1>', unsafe_allow_html=True)
-    
-    # Contador de registros
     st.markdown(f'<div class="contador-registros">Número de registros encontrados: {len(df_f)}</div>', unsafe_allow_html=True)
 
     for _, fila in df_f.head(50).iterrows():
