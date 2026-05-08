@@ -53,7 +53,7 @@ st.markdown("""
     }
     
     .card-body {
-        padding: 10px;
+        padding: 1px;
     }
     
     /* Labels de datos */
