@@ -49,7 +49,7 @@ st.markdown("""
         color: white !important;
         padding: 12px 20px;
         font-size: 1.3rem;
-        font-weight: 700;
+        font-weight: 600;
     }
     
     .card-body {
