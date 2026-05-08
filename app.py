@@ -37,7 +37,7 @@ st.markdown("""
     .evidencia-container {
         background-color: #F8FAFC; 
         border-radius: 12px;
-        margin-bottom: 35px;
+        margin-bottom: 25px;
         border: 1px solid #D1DBE5;
         overflow: hidden;
         box-shadow: 0 4px 10px rgba(0, 85, 150, 0.06);
