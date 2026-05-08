@@ -5,61 +5,68 @@ import re
 # 1. Configuración de página
 st.set_page_config(page_title="Imagen Telmex 2026", layout="wide")
 
-# 2. Estilos CSS Corporativos Avanzados
+# 2. Estilos CSS Corporativos Refinados
 st.markdown("""
     <style>
-    /* Fondo general */
     .stApp {
         background-color: #FFFFFF;
     }
     
-    /* Estilo del contador de registros */
+    /* Contador de registros */
     .contador-registros {
         color: #005596;
-        font-size: 1.2rem;
+        font-size: 1.1rem;
         font-weight: 700;
-        padding: 10px;
+        padding: 12px;
         border-left: 5px solid #005596;
         background-color: #E8F0F8;
-        margin-bottom: 20px;
+        margin-bottom: 25px;
         border-radius: 4px;
     }
     
-    /* Títulos principales */
-    h1 {
-        color: #005596 !important;
-        font-family: 'Segoe UI', sans-serif;
-    }
-    
-    /* Tarjeta de cada registro (Azul Tenue solicitado) */
+    /* Contenedor principal del registro */
     .evidencia-container {
-        background-color: #F0F4F8; /* Azul muy tenue */
-        border-radius: 15px;
-        padding: 25px;
-        margin-bottom: 30px;
-        border: 1px solid #D1DBE5; /* Borde azul de contraste */
-        box-shadow: 0 4px 12px rgba(0, 85, 150, 0.08);
+        background-color: #F8FAFC; 
+        border-radius: 12px;
+        margin-bottom: 35px;
+        border: 1px solid #D1DBE5;
+        overflow: hidden; /* Para que el encabezado respete los bordes redondeados */
+        box-shadow: 0 4px 10px rgba(0, 85, 150, 0.06);
     }
     
-    /* Estilo de la información interna */
+    /* Encabezado del Folio (Recuadro Azul solicitado) */
+    .folio-header {
+        background-color: #005596;
+        color: white;
+        padding: 10px 20px;
+        font-size: 1.4rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+    
+    /* Cuerpo interno de la tarjeta */
+    .card-body {
+        padding: 20px;
+    }
+    
     .info-label {
         color: #005596;
-        font-size: 0.85rem;
+        font-size: 0.8rem;
         font-weight: 700;
         text-transform: uppercase;
-        margin-bottom: 2px;
+        margin-bottom: 1px;
     }
     
     .info-value {
         color: #333333;
-        font-size: 1rem;
-        background-color: rgba(255, 255, 255, 0.5);
-        padding: 4px 8px;
+        font-size: 0.95rem;
+        background-color: white;
+        padding: 5px 10px;
         border-radius: 4px;
-        margin-bottom: 12px;
+        margin-bottom: 10px;
+        border: 1px solid #E2E8F0;
     }
-    
-    /* Barra lateral */
+
     section[data-testid="stSidebar"] {
         background-color: #005596;
     }
@@ -103,7 +110,6 @@ if df is not None:
     
     busqueda = st.sidebar.text_input("Folio:")
 
-    # Lógica de filtrado
     df_f = df.copy()
     if area_sel != "Todas": df_f = df_f[df_f['AREA'] == area_sel]
     if tipo_sel != "Todos": df_f = df_f[df_f['TIPO'] == tipo_sel]
@@ -112,17 +118,19 @@ if df is not None:
     # --- CUERPO PRINCIPAL ---
     st.title("🔵 Imagen Telmex 2026")
     
-    # Contador de registros con el nuevo estilo
     st.markdown(f'<div class="contador-registros">Número de registros encontrados: {len(df_f)}</div>', unsafe_allow_html=True)
 
     for _, fila in df_f.head(50).iterrows():
-        st.markdown('<div class="evidencia-container">', unsafe_allow_html=True)
+        # Inicio del contenedor con encabezado de Folio
+        st.markdown(f'''
+            <div class="evidencia-container">
+                <div class="folio-header">FOLIO: {fila['Folio']}</div>
+                <div class="card-body">
+        ''', unsafe_allow_html=True)
         
         col_info, col_a, col_d = st.columns([1.3, 2, 2])
         
         with col_info:
-            st.markdown(f"<h2 style='color:#005596; margin-top:0;'>Folio: {fila['Folio']}</h2>", unsafe_allow_html=True)
-            
             campos = [
                 ("📍 ÁREA", fila['AREA']),
                 ("🛠️ TIPO", fila['TIPO']),
@@ -151,7 +159,8 @@ if df is not None:
             else:
                 st.info("Sin registro 'Después'")
         
-        st.markdown('</div>', unsafe_allow_html=True)
+        # Cierre de los divs HTML
+        st.markdown('</div></div>', unsafe_allow_html=True)
 
 else:
     st.error("Archivo 'Datos.xlsx' no detectado.")
