@@ -125,8 +125,8 @@ if df is not None:
     # --- BARRA LATERAL ---
     st.sidebar.title("🔍 FILTROS")
     
-    area_sel = st.sidebar.selectbox("Área Operativa:", ["Todas"] + sorted(df['AREA'].unique().tolist()))
-    tipo_sel = st.sidebar.selectbox("Tipo de Infraestructura:", ["Todos"] + sorted(df['TIPO'].unique().tolist()))
+    area_sel = st.sidebar.selectbox("Área:", ["Todas"] + sorted(df['AREA'].unique().tolist()))
+    tipo_sel = st.sidebar.selectbox("Tipo:", ["Todos"] + sorted(df['TIPO'].unique().tolist()))
     busqueda = st.sidebar.text_input("Buscar por Folio:")
 
     df_f = df.copy()
