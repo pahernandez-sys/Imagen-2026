@@ -113,7 +113,7 @@ if df is not None:
             st.warning("No se encontraron resultados.")
         else:
             # Usamos head(100) para asegurar fluidez extrema, puedes subirlo si deseas
-            for _, fila in df_f.head(100).iterrows():
+            for _, fila in df_f.head(600).iterrows():
                 folio_val = fila.get('FOLIO', 'N/A')
                 st.markdown(f'<div class="evidencia-container"><div class="folio-header">FOLIO: {folio_val}</div>', unsafe_allow_html=True)
                 
